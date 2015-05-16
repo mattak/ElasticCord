@@ -15,8 +15,12 @@ public class LineBehaviour : MonoBehaviour {
 			.Select (_ => ballJoint.gameObject.transform.position)
 			.DistinctUntilChanged()
 				.Subscribe(position => {
-					lineRenderer.SetPosition(0, this.gameObject.transform.position);
-					lineRenderer.SetPosition(1, ballJoint.connectedBody.transform.position);
+					Vector3 jointPosition = ballJoint.connectedBody.transform.position;
+					Vector3 ballPosition  = this.gameObject.transform.position;
+					jointPosition.z = this.transform.position.z;
+					ballPosition.z = this.transform.position.z;
+					lineRenderer.SetPosition(0, jointPosition);
+					lineRenderer.SetPosition(1, ballPosition);
 				});
 
 		Observable.EveryUpdate ()
