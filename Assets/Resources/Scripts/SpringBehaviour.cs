@@ -16,7 +16,7 @@ public class SpringBehaviour : MonoBehaviour {
 			// .Select (collision => collision.gameObject.GetComponent<Rigidbody2D>() == currentJoint.connectedBody)
 			.Where (collider => collider.gameObject.tag == "Joint")
 			.Subscribe (collider => {
-					if (this.currentJoint.enabled) {
+					if (this.currentJoint.enabled && !Input.GetMouseButton(0)) {
 						this.currentJoint.enabled = false;
 					}
 					else {
@@ -24,13 +24,5 @@ public class SpringBehaviour : MonoBehaviour {
 						this.currentJoint.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>();
 					}
 		});
-	}
-
-	void OnCollisionEnter2D() {
-		Debug.Log ("collision");
-	}
-
-	void OnTriggerEnter2D() {
-		Debug.Log ("trigger");
 	}
 }

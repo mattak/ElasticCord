@@ -9,13 +9,29 @@ public class PlayerInputBehaviour : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		// this.OnMouseDownAsObservable ();
-		Observable.EveryUpdate ()
-			.Where (_ => Input.GetMouseButtonDown(0))
-				.Select (_ => Input.mousePosition)
+		CreateMouseObservable (Observable.EveryUpdate ().Where (_ => Input.GetMouseButtonDown(0)))
 				.Subscribe (position => {
-					position = Camera.main.ScreenToWorldPoint(position);
-					Debug.Log ("touch:" + position.x + "," + position.y);
-					this.ballObject.GetComponent<Rigidbody2D>().position = new Vector2(position.x, position.y);
+					Rigidbody2D rigidbody = this.ballObject.GetComponent<Rigidbody2D>();
+					rigidbody.isKinematic = true;
 				});
+
+		CreateMouseObservable (Observable.EveryUpdate ().Where (_ => Input.GetMouseButtonUp(0)))
+			.Subscribe (position => {
+				Rigidbody2D rigidbody = this.ballObject.GetComponent<Rigidbody2D>();
+				rigidbody.isKinematic = false;
+			});
+
+		CreateMouseObservable (Observable.EveryUpdate ().Where (_ => Input.GetMouseButton(0)))
+			.Subscribe (position => {
+				Rigidbody2D rigidbody = this.ballObject.GetComponent<Rigidbody2D>();
+				rigidbody.position = position;
+			});
+	}
+
+	IObservable<Vector2> CreateMouseObservable (IObservable<long> observable) {
+		return observable
+				.Select (_ => Input.mousePosition)
+				.Select (position => Camera.main.ScreenToWorldPoint(position))
+				.Select (position => new Vector2(position.x, position.y));
 	}
 }
