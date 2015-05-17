@@ -12,19 +12,18 @@ public class SpringBehaviour : MonoBehaviour {
 		canRelease = false;
 		currentJoint = this.gameObject.GetComponent<SpringJoint2D> ();
 
-		// when collision enter 2d for current joint. disable
+		// disable when collision enter 2d for current joint.
 		this.OnTriggerEnter2DAsObservable ()
-			// XXX: must filter without self
-			// .Select (collision => collision.gameObject.GetComponent<Rigidbody2D>() == currentJoint.connectedBody)
+			.Where (_ => !Input.GetMouseButton(0))
 			.Where (collider => collider.gameObject.tag == "Joint")
 			.Subscribe (collider => {
 					if (this.currentJoint.enabled && canRelease) {
 						this.currentJoint.enabled = false;
 					}
 					else {
+						this.currentJoint.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>();
 						this.currentJoint.enabled = true;
 						this.canRelease = false;
-						this.currentJoint.connectedBody = collider.gameObject.GetComponent<Rigidbody2D>();
 					}
 		});
 	}
