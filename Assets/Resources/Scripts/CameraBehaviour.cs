@@ -14,7 +14,7 @@ public class CameraBehaviour : MonoBehaviour {
 			.Select (_ => watchObject.transform.position.y)
 				.Subscribe (y => {
 					
-					if (watchObject.transform.position.y > 10.0f) {
+					if (watchObject.transform.position.y > 10.0f || watchObject.transform.position.y < 0.0f) {
 						Vector3 newPosition = new Vector3(this.transform.position.x, y, this.transform.position.z);
 						this.transform.position = Vector3.Slerp (this.transform.position, newPosition, 1.5f);
 					}
