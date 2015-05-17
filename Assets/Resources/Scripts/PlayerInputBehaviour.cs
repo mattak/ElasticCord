@@ -28,10 +28,6 @@ public class PlayerInputBehaviour : MonoBehaviour {
 			.Select (position => {
 				Rigidbody2D connectedBody = springJoint.connectedBody.GetComponent<Rigidbody2D>();
 
-				Debug.Log ("rigidbody:" + connectedBody.position);
-				Debug.Log ("position:" + position);
-				Debug.Log ("distance:" + Vector2.Distance (connectedBody.position, position));
-
 				if (Vector2.Distance (connectedBody.position, position) < distanceThreshold) {
 					return position;
 				}
