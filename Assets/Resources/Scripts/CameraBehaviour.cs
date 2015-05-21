@@ -12,15 +12,13 @@ public class CameraBehaviour : MonoBehaviour {
 		Observable.EveryUpdate()
 			.Where (_ => !Input.GetMouseButton(0) || !springBehaviour.IsJointing())
 			.Select (_ => watchObject.transform.position.y)
-				//.Throttle (System.TimeSpan.FromSeconds(0.5f))
-				//.Sample (System.TimeSpan.FromSeconds(0.5f))
 				.Select (y => {
 					if (watchObject.transform.position.y > 10.0f || watchObject.transform.position.y < 0.0f) {
 						Vector3 newPosition = new Vector3(this.transform.position.x, y, this.transform.position.z);
 						float distance = Vector3.Distance (this.transform.position, newPosition);
 						
-						return (distance > 2.0f)
-							? Vector3.Lerp (this.transform.position, newPosition, 0.1f)
+						return (distance > 2.0f) ?
+							Vector3.Lerp (this.transform.position, newPosition, 0.1f)
 								: this.transform.position;
 					}
 					return new Vector3 (this.transform.position.x, 0.0f, this.transform.position.z);
