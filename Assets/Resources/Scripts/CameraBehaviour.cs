@@ -24,5 +24,12 @@ public class CameraBehaviour : MonoBehaviour {
 					return new Vector3 (this.transform.position.x, 0.0f, this.transform.position.z);
 				})
 				.Subscribe (position => this.transform.position = position );
+
+		float ratio = 2.0f / 640.0f * 1136.0f;
+		Camera.main.orthographicSize = (float)(ratio / Screen.width * Screen.height);
+		Debug.Log ("resolusion:" + Screen.width + "x" + Screen.height);
+		Debug.Log ("aspect:" + this.GetComponent<Camera>().aspect);
+		Debug.Log ("orthographicSize:" + this.GetComponent<Camera>().orthographicSize);
+		Debug.Log ("cameraPixel:" + GetComponent<Camera>().pixelWidth + "x" + GetComponent<Camera>().pixelHeight);
 	}
 }
